@@ -3,8 +3,6 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 contract Lottery {
-
-    
     struct Ticket {
         uint256 id;
         uint256 dateTime;
@@ -20,4 +18,13 @@ contract Lottery {
     uint256 public startDate;
     uint16 public dayCount;
     bool lotterIsDone;
+
+    event BuyTicket(address indexed addr, uint256 amount, uint256 ticketCode);
+    event Winner(address indexed winner, uint256 amount, uint256 ticketCode);
+
+    constructor(uint16 _dayCount,address payable _admin) public {
+        dayCount = _dayCount;
+        startDate = block.timestamp;
+        admin = _admin;
+    }
 }

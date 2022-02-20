@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0
 
-pragma solidity >=0.7.0 <0.9.0;
+pragma solidity 0.5.0;
 
 contract Lottery {
     struct Ticket {
         uint256 id;
         uint256 dateTime;
-        address member;
+        address payable member;
         bool isWin;
     }
 
@@ -23,10 +23,10 @@ contract Lottery {
     event BuyTicket(address indexed addr, uint256 amount, uint256 ticketCode);
     event Winner(address indexed winner, uint256 amount, uint256 ticketCode);
 
-    constructor(uint16 _dayCount, address payable _admin) public {
+    constructor(uint16 _dayCount) public {
         dayCount = _dayCount;
         startDate = block.timestamp;
-        admin = _admin;
+        admin = msg.sender;
     }
 
     function buyTicket() public payable returns (uint256) {
@@ -45,4 +45,12 @@ contract Lottery {
         emit BuyTicket(msg.sender, msg.value, ticketCode);
         return ticketCode;
     }
+
+
+
+    function random(uint count) private view returns(uint){
+      uint randomNumber= uint(keccak256(abi.encodePacked(block.timestamp,block.difficulty)))%count;
+      return randomNumber;
+    }
+
 }
